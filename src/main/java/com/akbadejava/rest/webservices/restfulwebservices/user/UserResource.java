@@ -20,12 +20,21 @@ public class UserResource {
 
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable int id) {
-        return userDao.findOne(id);
+        User user = userDao.findOne(id);
+        if(user == null) {
+            throw new UserNotFoundException("id "+ id);
+        }
+        return user;
     }
 
     //POST /users
     @PostMapping("/users")
     public void createuser(@RequestBody User user) {
         userDao.save(user);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        userDao.deleteUserById(id);
     }
 }
